@@ -58,7 +58,7 @@ class _RecordingsState extends State<RecordingScreen> {
   }
 
   void _beginRecording() async {
-    final localFile = await _localFile; //'$localPath/counter.m4a';
+    final localFile = await _localFile;
     final fileExists = await localFile.exists();
 
     await _createDirectory();
@@ -66,7 +66,7 @@ class _RecordingsState extends State<RecordingScreen> {
     if (fileExists) {
       localFile.delete();
     }
-    _alertMessage(text: (await localFile.parent.exists()).toString());
+
     // Start recording
     await AudioRecorder.start(
         path: localFile.path.toString(), audioOutputFormat: AudioOutputFormat.AAC);
@@ -84,10 +84,9 @@ class _RecordingsState extends State<RecordingScreen> {
     final dirExists = await dir.exists();
 
     if (!dirExists) {
-      _alertMessage(text: 'creating');
       return dir.create(recursive: true);
-    } else
-      _alertMessage(text: 'exists');
+    }
+
     return dir;
   }
 
@@ -143,7 +142,8 @@ class _RecordingsState extends State<RecordingScreen> {
 
   Future<File> get _localFile async {
     final path = await _localPath;
-    return File('$path/counter');
+    final now = DateTime.now().toIso8601String();
+    return File('$path/diary-$now');
   }
 
   Future<File> writeCounter(int counter) async {

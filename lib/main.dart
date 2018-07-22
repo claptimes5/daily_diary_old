@@ -11,8 +11,8 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: title,
-//      home: RecordingListPage(title: title)
-      home: RecordingScreen()
+      home: RecordingListPage(title: title)
+//      home: RecordingScreen()
     );
   }
 }
