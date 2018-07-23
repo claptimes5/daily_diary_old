@@ -12,6 +12,16 @@ class RecordingListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Welcome to Flutter'),
+        actions: <Widget>[
+          new IconButton(
+          icon: new Icon(Icons.refresh),
+          tooltip: 'Refresh',
+          onPressed: () =>
+              {
+
+              },
+          ),
+        ],
       ),
       body: Center(
         child: RecordingsList(),

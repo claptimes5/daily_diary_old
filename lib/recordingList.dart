@@ -3,6 +3,10 @@ import 'fileIo.dart';
 import 'dart:async';
 import 'dart:io';
 
+import 'package:audioplayer/audioplayer.dart';
+import 'audioPlayer.dart';
+import 'recording.dart';
+
 class RecordingsList extends StatefulWidget {
   @override
   createState() => _RecordingsList();
@@ -11,6 +15,13 @@ class RecordingsList extends StatefulWidget {
 class _RecordingsList extends State<RecordingsList> {
   var recordingsList;
   bool listRetrieved = false;
+  File filePlaying;
+  AudioPlayer audioPlugin;
+
+  _RecordingsList() {
+    audioPlugin = new AudioPlayer();
+  }
+
 
   void retrieveFiles() async {
     var _recordingsList = await (new FileIo()).dirList();
@@ -23,35 +34,26 @@ class _RecordingsList extends State<RecordingsList> {
     }
   }
 
-  Widget _recording(int index) {
-//        final _recordingDate = DateTime.now()
-//                .subtract(new Duration(days: index))
-//        .toString();
-    var _text;
+//  Future<void> play(path) async {
+//    await audioPlayer.play(path);
+//    setState(() => playerState = PlayerState.playing);
+//  }
 
-    if (recordingsList[index] == null) {
-      _text = "Loading";
-    } else if (index < recordingsList.length) {
-      var fileOrDir = recordingsList[index];
-      String _filePath = fileOrDir.toString();
-      String _lastModified;
+  Widget _handleTap() {
+//    Navigator.push(
+//      context,
+//      MaterialPageRoute(builder: (context) => AudioApp()),
+//    );
+//    play(path);
 
-      for (var fileOrDir in recordingsList) {
-        if (fileOrDir is File) {
-          _lastModified = fileOrDir.lastModifiedSync().toString();
-        } else if (fileOrDir is Directory) {
-          print(fileOrDir.path);
-        }
-      }
-
-      _text = "$_lastModified - $_filePath";
-    }
-
-    return new ListTile(
-      trailing: const Icon(Icons.play_circle_outline),
-      title: Text(_text),
+    return new SimpleDialog(
+      title: const Text('Select assignment'),
+      children: <Widget>[
+        new AudioApp(),
+      ],
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +66,25 @@ class _RecordingsList extends State<RecordingsList> {
 
     return new ListView.builder(
       padding: new EdgeInsets.all(8.0),
-      itemExtent: 20.0,
+      itemExtent: 60.0,
       itemCount: recordingsListLength,
       itemBuilder: (BuildContext context, int index) {
-        return _recording(index);
+        return Recording(
+            fileOrDir: recordingsList[index],
+            isFilePlaying: (recordingsList[index] == filePlaying),
+            onPressedButton: () {
+              setState(() {
+
+                // Stop playing if already playing
+                if (filePlaying == recordingsList[index]) {
+                  filePlaying = null;
+                } else {
+                  filePlaying = recordingsList[index];
+                }
+
+              });
+            }
+        );
       },
     );
   }

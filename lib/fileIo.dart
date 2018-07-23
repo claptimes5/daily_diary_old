@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:simple_permissions/simple_permissions.dart';
+import 'package:glob/glob.dart';
 
 class FileIo {
   var _directory;
@@ -23,7 +24,14 @@ class FileIo {
 
   Future<List<FileSystemEntity>> dirList() async {
     var dir = await _localDir;
+    var files = dir.listSync();
 
-    return dir.listSync();
+//    for (var fileOrDir in files) {
+//      if (!fileOrDir.path.endsWith('.m4a')) {
+//        files.remove(fileOrDir);
+//      }
+//    }
+
+    return files;
   }
 }
