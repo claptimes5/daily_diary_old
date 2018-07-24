@@ -34,10 +34,13 @@ class _RecordingsList extends State<RecordingsList> {
     }
   }
 
-//  Future<void> play(path) async {
-//    await audioPlayer.play(path);
-//    setState(() => playerState = PlayerState.playing);
-//  }
+  Future<void> play(path) async {
+    await audioPlugin.play(path, isLocal: true);
+  }
+
+  Future<void> stop() async {
+    await audioPlugin.stop();
+  }
 
   Widget _handleTap() {
 //    Navigator.push(
@@ -77,9 +80,11 @@ class _RecordingsList extends State<RecordingsList> {
 
                 // Stop playing if already playing
                 if (filePlaying == recordingsList[index]) {
+                  stop();
                   filePlaying = null;
                 } else {
                   filePlaying = recordingsList[index];
+                  play(filePlaying.path);
                 }
 
               });

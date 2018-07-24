@@ -200,14 +200,7 @@ class _RecordingsState extends State<RecordingScreen> {
           },
           child: Text('Record'),
         ),
-        Text("Permitted: $_hasPermissions. Recording? $_isRecording"),
-        RaisedButton(
-          onPressed: () {
-            setCounter();
-          },
-          child: Text('Get Value'),
-        ),
-        Text("Value: $_fileValue"),
+        Text("Permitted: $_hasPermissions. Recording? $_isRecording")
       ]),
     );
   }
