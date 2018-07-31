@@ -49,6 +49,7 @@ class _RecordingsState extends State<RecordingScreen> {
       _beginRecording();
     } else {
       _endRecording();
+      Navigator.pop(context, 'true');
     }
 
     setState(() {
