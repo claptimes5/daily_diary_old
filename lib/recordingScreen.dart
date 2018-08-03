@@ -17,6 +17,7 @@ class _RecordingsState extends State<RecordingScreen> {
   bool _hasPermissions;
   bool _isRecording;
   var _fileValue;
+  Recording _recording = new Recording();
 
   void toggleRecording() async {
     // Check permissions before starting
@@ -49,7 +50,7 @@ class _RecordingsState extends State<RecordingScreen> {
       _beginRecording();
     } else {
       _endRecording();
-      Navigator.pop(context, 'true');
+//      Navigator.pop(context, 'true');
     }
 
     setState(() {
@@ -76,6 +77,7 @@ class _RecordingsState extends State<RecordingScreen> {
 
     setState(() {
       _isRecording = isRecording;
+      _recording = new Recording(duration: new Duration(), path: "");
     });
   }
 
@@ -123,7 +125,7 @@ class _RecordingsState extends State<RecordingScreen> {
 
   void _endRecording() async {
 //     Stop recording
-    Recording recording = await AudioRecorder.stop();
+    var recording = await AudioRecorder.stop();
     print("Path : ${recording.path},  Format : ${recording
         .audioOutputFormat},  Duration : ${recording
         .duration},  Extension : ${recording.extension},");
@@ -132,6 +134,7 @@ class _RecordingsState extends State<RecordingScreen> {
 
     setState(() {
       _isRecording = isRecording;
+      _recording = recording;
     });
   }
 
@@ -192,17 +195,20 @@ class _RecordingsState extends State<RecordingScreen> {
       appBar: AppBar(
         title: Text("Record your entry for today"),
       ),
-      body: new Column(children: <Widget>[
-        RaisedButton(
-          onPressed: () {
-            toggleRecording();
+      body: new Column(
+          children: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                toggleRecording();
 
-            writeCounter(4);
-          },
-          child: Text('Record'),
-        ),
-        Text("Permitted: $_hasPermissions. Recording? $_isRecording")
-      ]),
+                writeCounter(4);
+              },
+              child: Text('Record'),
+            ),
+            Text("Permitted: $_hasPermissions. Recording? $_isRecording"),
+            Text("Audio recording duration : ${_recording.duration.toString()}" )
+
+          ]),
     );
   }
 }
